@@ -1,0 +1,29 @@
+{
+  "R": {
+    "Version": "4.0.0",
+    "Repositories": [
+      {
+        "Name": "CRAN",
+        "URL": "https://cran.stat.auckland.ac.nz"
+      },
+      {
+        "Name": "CRANextra",
+        "URL": "https://www.stats.ox.ac.uk/pub/RWin"
+      }
+    ]
+  },
+  "Packages": {
+    "renv": {
+      "Package": "renv",
+      "Version": "0.11.0-14",
+      "Source": "GitHub",
+      "RemoteType": "github",
+      "RemoteHost": "api.github.com",
+      "RemoteRepo": "renv",
+      "RemoteUsername": "rstudio",
+      "RemoteRef": "master",
+      "RemoteSha": "268ba8395c4d2af5266ae64e3f42e25074ec9a6c",
+      "Hash": "213287134488ec4e1b3a1066f2ff3d21"
+    }
+  }
+}

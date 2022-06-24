@@ -1,0 +1,3 @@
+name,trait,family,fixed,na.action,random
+model1,bwt,asr_gaussian(),1,na.method(x='omit'),"vm(animal , ainv)"
+model2,bwt,asr_gaussian(),1 + sex,na.method(x='omit'),"vm(animal , ainv)"
