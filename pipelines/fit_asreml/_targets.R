@@ -10,7 +10,7 @@ lapply(list.files('./R', full.names = TRUE), source)
 # ### -- SLURM setup -----#
 # library(RLinuxModules)
 # module('load Slurm')
-# library(future)
+library(future)
 # library(future.batchtools)
 # future::plan(strategy = batchtools_slurm,
 # 			 template=template,
@@ -28,6 +28,7 @@ lapply(list.files('./R', full.names = TRUE), source)
 # 							  						 		 memory=1000)))
 #)
 
+plan(multisession)
 models <- read.csv('./DATA/models.csv')
 
 list(

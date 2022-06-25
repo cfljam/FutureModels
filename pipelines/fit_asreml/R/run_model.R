@@ -15,8 +15,9 @@ run_model <- function(data,
                       na.action = na.method(x='include'),
                       workspace="500mb",
                       family = asr_gaussian(),
-                      fixed.RHS =  1,
+                      fixed.RHS ,
                       random.RHS,
+                      residual = ~ idv(units),
                       env = caller_env()){
   require(rlang)
   require(asreml)
@@ -29,12 +30,14 @@ run_model <- function(data,
   fixed.formula <- paste(trait,'~',fixed.RHS)
   random.RHS <- enexpr(random.RHS)
   random.formula <- paste('~',expr_text(random.RHS))
+  residual <- enexpr(residual)
+  residual.formula <- paste('~',expr_text(residual))
   model_call <- expr(asreml(data = !!data,
                           fixed= as.formula(!!fixed.formula),
                           na.action= !!na.action,
                           workspace=!!workspace,
                           random = as.formula(!!random.formula),
-                          residual = ~ idv(units))
+                          residual = as.formula(!!residual.formula))
                    )
 
   eval(model_call, env)
