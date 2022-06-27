@@ -55,7 +55,12 @@ list(
 				},
 				retrieval = 'main',
 				packages=c('asreml'),
-				deployment = 'worker')
+				deployment = 'worker',
+				resources = tar_resources(future = 
+                              tar_resources_future(resources = 
+                                                     list(ncpus = 1,
+                                                          walltime = 10000,
+                                                          memory=10000))))
 	
 	)
 )
