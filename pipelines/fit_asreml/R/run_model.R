@@ -11,7 +11,6 @@
 #'
 #' @examples
 run_model <- function(data,
-                      trait,
                       na.action = na.method(x='include'),
                       workspace="500mb",
                       family = asr_gaussian(),
@@ -23,11 +22,11 @@ run_model <- function(data,
   require(asreml)
 
   data <- enexpr(data)
-  trait <- enexpr(trait)
   na.action <- enexpr(na.action)
   family <- enexpr(family)
   fixed.RHS <- enexprs(fixed.RHS)
-  fixed.formula <- paste(trait,'~',fixed.RHS)
+  #fixed.formula <- paste(trait,'~',fixed.RHS)
+  fixed.formula <- fixed.RHS
   random.RHS <- enexpr(random.RHS)
   random.formula <- random.RHS
   residual <- enexpr(residual)

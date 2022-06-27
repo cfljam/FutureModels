@@ -37,7 +37,8 @@ list(
 	tar_target(gryphonped,
 			   readRDS(here::here('DATA','gryphonped.RDS'))),
 	tar_target(ainv,
-			   ainverse(gryphonped)),
+			   ainverse(gryphonped),
+			   packages=c('asreml')),
 	tar_map(
 		names = name,
 		values = models,
@@ -46,7 +47,6 @@ list(
 			{ainv
 			run_model(
 				data = gryphon,
-				trait = trait,
 				family = family,
 				na.action = na.method(x = 'omit'),
 				workspace = "1000mb",
@@ -54,6 +54,7 @@ list(
 				random.RHS = randomterm)
 				},
 				retrieval = 'main',
+				packages=c('asreml'),
 				deployment = 'worker')
 	
 	)
