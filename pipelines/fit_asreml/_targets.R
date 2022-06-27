@@ -6,29 +6,29 @@ source('Packages.R')
 lapply(list.files('./R', full.names = TRUE), source)
 
 ## Set up Config for future.batchtools and execution plan
-# template <-'./slurm.tmpl'
+template <-'./slurm.tmpl'
 # ### -- SLURM setup -----#
-# library(RLinuxModules)
-# module('load Slurm')
+ library(RLinuxModules)
+ module('load Slurm')
 library(future)
-# library(future.batchtools)
-# future::plan(strategy = batchtools_slurm,
-# 			 template=template,
-# 			 registry = list("cluster.functions$fs.latency" = 1000,
-# 			 				"cluster.functions$scheduler.latency" = 1000))
-# ## Set default worker resources
-# tar_option_set(
-# 	deployment = 'main',
-# 	error = "abridge",
-# 	storage = "main",
-# 	resources = tar_resources(future =
-# 							  	tar_resources_future(resources =
-# 							  						 	list(ncpus = 1,
-# 							  						 		 walltime = 3600,
-# 							  						 		 memory=1000)))
-#)
+library(future.batchtools)
+future::plan(strategy = batchtools_slurm,
+			 template=template,
+			 registry = list("cluster.functions$fs.latency" = 1000,
+			 				"cluster.functions$scheduler.latency" = 1000))
+## Set default worker resources
+tar_option_set(
+	deployment = 'main',
+	error = "abridge",
+	storage = "main",
+	resources = tar_resources(future =
+							  	tar_resources_future(resources =
+							  						 	list(ncpus = 1,
+							  						 		 walltime = 3600,
+							  						 		 memory=1000)))
+)
 
-plan(multisession)
+#plan(multisession)
 models <- read.csv('./DATA/models.csv')
 
 list(
@@ -48,7 +48,9 @@ list(
 				trait = trait,
 				family = family,
 				na.action = na.method(x = 'omit'),
-				workspace = "10000mb",
+				workspace = "100mb",
 				fixed.RHS = fixed,
-				random.RHS = vm(animal , tar_read(ainv)))))
+				random.RHS = vm(animal , tar_read(ainv))),
+				deployment = 'worker')
+)
 )
