@@ -11,22 +11,22 @@ template <-'./slurm.tmpl'
  library(RLinuxModules)
  module('load Slurm')
 library(future)
-library(future.batchtools)
+ library(future.batchtools)
 future::plan(strategy = batchtools_slurm,
-			 template=template,
-			 registry = list("cluster.functions$fs.latency" = 1000,
-			 				"cluster.functions$scheduler.latency" = 1000))
-## Set default worker resources
+             template=template,
+             registry = list("cluster.functions$fs.latency" = 100))
+
 tar_option_set(
-	deployment = 'main',
-	error = "abridge",
-	storage = "main",
-	resources = tar_resources(future =
-							  	tar_resources_future(resources =
-							  						 	list(ncpus = 1,
-							  						 		 walltime = 3600,
-							  						 		 memory=1000)))
+  deployment = 'main',
+  error = "abridge",
+  storage = "main",
+  resources = tar_resources(future = 
+                              tar_resources_future(resources = 
+                                                     list(ncpus = 1,
+                                                          walltime = 1000,
+                                                          memory=1000)))
 )
+
 
 #plan(multisession)
 models <- read.csv('./DATA/models.csv')
@@ -43,14 +43,18 @@ list(
 		values = models,
 		tar_target(
 			model,
+			{ainv
 			run_model(
 				data = gryphon,
 				trait = trait,
 				family = family,
 				na.action = na.method(x = 'omit'),
-				workspace = "100mb",
+				workspace = "1000mb",
 				fixed.RHS = fixed,
-				random.RHS = vm(animal , tar_read(ainv))),
+				random.RHS = randomterm)
+				},
+				retrieval = 'main',
 				deployment = 'worker')
-)
+	
+	)
 )

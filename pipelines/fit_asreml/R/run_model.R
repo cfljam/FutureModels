@@ -29,9 +29,9 @@ run_model <- function(data,
   fixed.RHS <- enexprs(fixed.RHS)
   fixed.formula <- paste(trait,'~',fixed.RHS)
   random.RHS <- enexpr(random.RHS)
-  random.formula <- paste('~',expr_text(random.RHS))
+  random.formula <- random.RHS
   residual <- enexpr(residual)
-  residual.formula <- paste('~',expr_text(residual))
+  residual.formula <- residual
   model_call <- expr(asreml(data = !!data,
                           fixed= as.formula(!!fixed.formula),
                           na.action= !!na.action,
@@ -39,7 +39,9 @@ run_model <- function(data,
                           random = as.formula(!!random.formula),
                           residual = as.formula(!!residual.formula))
                    )
-
-  eval(model_call, env)
+  return(model_call)
+  eval(model_call)
+ 
+ 
 
 }

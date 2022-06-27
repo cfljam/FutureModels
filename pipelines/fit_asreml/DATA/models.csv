@@ -1,6 +1,5 @@
-name,trait,family,fixed,na.action,random
-model1,bwt,asr_gaussian(),"1","na.method(x = 'omit', y = 'omit')","vm(animal , ainv)"
-model2,bwt,asr_gaussian(),"1 + sex","na.method(x = 'omit', y = 'omit')","vm(animal , ainv)"
-model3,bwt,asr_gaussian(),"1+sex","na.method(x = 'omit', y = 'omit')","vm(animal, ainv) + byear"
-model4,bwt,asr_gaussian(),"1+sex","na.method(x = 'omit', y = 'omit')","vm(animal, ainv) + byear + mother"
-model_SEX,bwt,asr_gaussian(),"1+sex","na.method(x = 'omit', y = 'omit')","at(sex):vm(animal, ainv) + byear + mother"
+name,trait,family,fixed,na.action,randomterm
+model1,bwt,asr_gaussian(),"1","na.method(x = 'omit', y = 'omit')"," ~ vm(animal ,ainv)"
+model2,bwt,asr_gaussian(),"1 + sex","na.method(x = 'omit', y = 'omit')"," ~ vm(animal ,ainv)"
+model3,bwt,asr_gaussian(),"1+sex","na.method(x = 'omit', y = 'omit')"," ~ vm(animal,ainv) + byear"
+model4,bwt,asr_gaussian(),"1+sex","na.method(x = 'omit', y = 'omit')"," ~ vm(animal,ainv) + byear + mother"
