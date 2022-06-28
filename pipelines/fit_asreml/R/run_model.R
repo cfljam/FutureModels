@@ -11,6 +11,7 @@
 #'
 #' @examples
 run_model <- function(data,
+                      ainverse,
                       na.action = na.method(x='include'),
                       workspace="500mb",
                       family = asr_gaussian(),
@@ -20,13 +21,12 @@ run_model <- function(data,
                       env = caller_env()){
   require(rlang)
   require(asreml)
-
   data <- enexpr(data)
   na.action <- enexpr(na.action)
   family <- enexpr(family)
   fixed.RHS <- enexprs(fixed.RHS)
   #fixed.formula <- paste(trait,'~',fixed.RHS)
-  fixed.formula <- fixed.RHS
+  fixed.formula <- as.character(fixed.RHS)
   random.RHS <- enexpr(random.RHS)
   random.formula <- random.RHS
   residual <- enexpr(residual)
@@ -38,8 +38,9 @@ run_model <- function(data,
                           random = as.formula(!!random.formula),
                           residual = as.formula(!!residual.formula))
                    )
-  return(model_call)
-  eval(model_call)
+ # print(model_call)
+  model <- eval(model_call)
+  return(model)
  
  
 

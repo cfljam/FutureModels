@@ -44,16 +44,15 @@ list(
 		values = models,
 		tar_target(
 			model,
-			{ainv
+			{
 			run_model(
-				data = gryphon,
+				data = tar_read(gryphon),
 				family = family,
-				na.action = na.method(x = 'omit'),
+				na.action = na.method(x = 'omit',y='omit'),
 				workspace = "1000mb",
 				fixed.RHS = fixed,
 				random.RHS = randomterm)
 				},
-				retrieval = 'main',
 				packages=c('asreml'),
 				deployment = 'worker',
 				resources = tar_resources(future = 
