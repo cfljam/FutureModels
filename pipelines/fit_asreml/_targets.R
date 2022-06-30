@@ -6,28 +6,29 @@ source('Packages.R')
 lapply(list.files('./R', full.names = TRUE), source)
 
 ## Set up Config for future.batchtools and execution plan
-# template <-'./slurm.tmpl'
+template <-'./slurm.tmpl'
 # ### -- SLURM setup -----#
-# library(RLinuxModules)
-# module('load Slurm')
-# library(future)
-# library(future.batchtools)
-# future::plan(strategy = batchtools_slurm,
-# 			 template=template,
-# 			 registry = list("cluster.functions$fs.latency" = 1000,
-# 			 				"cluster.functions$scheduler.latency" = 1000))
-# ## Set default worker resources
-# tar_option_set(
-# 	deployment = 'main',
-# 	error = "abridge",
-# 	storage = "main",
-# 	resources = tar_resources(future =
-# 							  	tar_resources_future(resources =
-# 							  						 	list(ncpus = 1,
-# 							  						 		 walltime = 3600,
-# 							  						 		 memory=1000)))
-#)
+ library(RLinuxModules)
+ module('load Slurm')
+library(future)
+ library(future.batchtools)
+future::plan(strategy = batchtools_slurm,
+             template=template,
+             registry = list("cluster.functions$fs.latency" = 100))
 
+tar_option_set(
+  deployment = 'main',
+  error = "abridge",
+  storage = "main",
+  resources = tar_resources(future = 
+                              tar_resources_future(resources = 
+                                                     list(ncpus = 1,
+                                                          walltime = 1000,
+                                                          memory=1000)))
+)
+
+
+#plan(multisession)
 models <- read.csv('./DATA/models.csv')
 
 list(
@@ -36,18 +37,29 @@ list(
 	tar_target(gryphonped,
 			   readRDS(here::here('DATA','gryphonped.RDS'))),
 	tar_target(ainv,
-			   ainverse(gryphonped)),
+			   ainverse(gryphonped),
+			   packages=c('asreml')),
 	tar_map(
 		names = name,
 		values = models,
 		tar_target(
 			model,
+			{
 			run_model(
-				data = gryphon,
-				trait = trait,
+				data = tar_read(gryphon),
 				family = family,
-				na.action = na.method(x = 'omit'),
-				workspace = "10000mb",
+				na.action = na.method(x = 'omit',y='omit'),
+				workspace = "1000mb",
 				fixed.RHS = fixed,
-				random.RHS = vm(animal , tar_read(ainv)))))
+				random.RHS = randomterm)
+				},
+				packages=c('asreml'),
+				deployment = 'worker',
+				resources = tar_resources(future = 
+                              tar_resources_future(resources = 
+                                                     list(ncpus = 1,
+                                                          walltime = 10000,
+                                                          memory=10000))))
+	
+	)
 )
