@@ -23,8 +23,8 @@ tar_option_set(
   resources = tar_resources(future = 
                               tar_resources_future(resources = 
                                                      list(ncpus = 1,
-                                                          walltime = 1000,
-                                                          memory=1000)))
+                                                          walltime = 10,
+                                                          memory=2100))),
 )
 
 
@@ -42,6 +42,7 @@ list(
 	tar_map(
 		names = name,
 		values = models,
+		unlist = T,
 		tar_target(
 			model,
 			{
@@ -54,12 +55,13 @@ list(
 				random.RHS = randomterm)
 				},
 				packages=c('asreml'),
-				deployment = 'worker',
-				resources = tar_resources(future = 
-                              tar_resources_future(resources = 
-                                                     list(ncpus = 1,
-                                                          walltime = 10000,
-                                                          memory=10000))))
+				deployment = 'worker'
+				# resources = tar_resources(future = 
+                #               tar_resources_future(resources = 
+                #                                      list(ncpus = 1,
+                #                                           walltime = 10,
+                #                                           memory=10000))))
 	
-	)
+	))
+
 )
